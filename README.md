@@ -1,5 +1,7 @@
 # cs348-project
 
+## Working with Sample Database
+
 To test our sample code, in db2:
 First connect to the CS348 server.
 ````
@@ -20,10 +22,22 @@ After execution of sample code, the tables should be dropped
 ````
     db2 -stvf drop_tables.sql
 ````
+  
 
-Members:
-Rujing Li
-Moneta Wang
-Kristine Yuan
-Weiyu Wang
+## Currently Supporting Features
+**Feature 1**: User login System  
+
+**Feature 2**: User Registration  
+
+**Feature 3**: Search for Carpool by Destination and Time  
+
+**Feature 4**: Edit User Profile
+
+*Remark*: We also support a web interface for database driven application login system.  
+
+## Members:
+Rujing Li  
+Moneta Wang  
+Kristine Yuan  
+Weiyu Wang  
 
