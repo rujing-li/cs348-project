@@ -1,4 +1,4 @@
-CREATE TABLE User 
+CREATE TABLE User
 ( 
   username VARCHAR NOT NULL PRIMARY KEY,
   legal_name VARCHAR NOT NULL,
@@ -6,7 +6,7 @@ CREATE TABLE User
   phone_num VARCHAR NOT NULL
 );
 
-CREATE TABLE Driver 
+CREATE TABLE Driver
 (
   username INTEGER NOT NULL PRIMARY KEY REFERENCES User(username),
   license_num VARCHAR NOT NULL
@@ -25,6 +25,7 @@ CREATE TABLE Carpool
   time DATETIME NOT NULL,
   departure_city VARCHAR NOT NULL,
   destination_city VARCHAR NOT NULL,
+  car_plate VARCHAR NOT NULL,
   availability INTEGER NOT NULL,
   price DECIMAL,
   PRIMARY KEY(driver_username, time)
@@ -44,8 +45,4 @@ CREATE TABLE Ride
   FOREIGN KEY (passenger_username) REFERENCES User(username),
   PRIMARY KEY (driver_username, time, passenger_username)
 );
-
-
-
-
 
