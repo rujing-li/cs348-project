@@ -28,4 +28,9 @@ WHERE time < 2022-10-23 11:30:00
 
 --Update profile
 UPDATE User
-SET username = 
+SET password = '123321'
+WHERE username = faye
+
+UPDATE User
+SET phone_num = '123-456-7890'
+WHERE username = faye
