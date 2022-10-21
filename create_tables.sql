@@ -1,48 +1,47 @@
 CREATE TABLE User
-( 
-  username VARCHAR NOT NULL PRIMARY KEY,
-  legal_name VARCHAR NOT NULL,
-  password VARCHAR NOT NULL, 
-  phone_num VARCHAR NOT NULL
+(
+  username VARCHAR(30) NOT NULL PRIMARY KEY,
+  legal_name VARCHAR(30) NOT NULL,
+  password VARCHAR(30) NOT NULL,
+  phone_num VARCHAR(30) NOT NULL
 );
 
 CREATE TABLE Driver
 (
-  username INTEGER NOT NULL PRIMARY KEY REFERENCES User(username),
-  license_num VARCHAR NOT NULL
+  username VARCHAR(30) NOT NULL PRIMARY KEY REFERENCES User(username),
+  license_num VARCHAR(30) NOT NULL
 );
 
 CREATE TABLE Car
 (
-  plate_num VARCHAR NOT NULL PRIMARY KEY,
-  description VARCHAR,
-  max_seats INTEGER NOT NULL
+  plate_num VARCHAR(30) NOT NULL PRIMARY KEY,
+  description VARCHAR(30),
+  max_seats CHAR(10) NOT NULL
 );
 
 CREATE TABLE Carpool
 (
-  driver_username VARCHAR NOT NULL REFERENCES User(username),
+  driver_username VARCHAR(30) NOT NULL REFERENCES User(username),
   time DATETIME NOT NULL,
-  departure_city VARCHAR NOT NULL,
-  destination_city VARCHAR NOT NULL,
-  car_plate VARCHAR NOT NULL,
-  availability INTEGER NOT NULL,
+  departure_city VARCHAR(30) NOT NULL,
+  destination_city VARCHAR(30) NOT NULL,
+  car_plate VARCHAR(30) NOT NULL,
+  availability CHAR(10) NOT NULL,
   price DECIMAL,
   PRIMARY KEY(driver_username, time)
 );
 
 CREATE TABLE Drive
 (
-  FOREIGN KEY (driver_username) REFERENCES Driver(username),
-  plate_num VARCHAR NOT NULL REFERENCES Car(plate_num),
+  driver_username VARCHAR(30) NOT NULL REFERENCES Driver(username),
+  plate_num VARCHAR(30) NOT NULL REFERENCES Car(plate_num),
   PRIMARY KEY (driver_username, plate_num)
 );
 
 CREATE TABLE Ride
 (
-  FOREIGN KEY (driver_username) REFERENCES Driver(username),
+  driver_username VARCHAR(30) NOT NULL REFERENCES Driver(username),
   time DATETIME NOT NULL,
-  FOREIGN KEY (passenger_username) REFERENCES User(username),
+  passenger_username VARCHAR(30) NOT NULL REFERENCES User(username),
   PRIMARY KEY (driver_username, time, passenger_username)
 );
-

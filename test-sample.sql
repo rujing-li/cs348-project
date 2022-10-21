@@ -1,10 +1,10 @@
 --? is the userinput
 
 --login
-SELECT * 
+SELECT *
 FROM User
-WHERE username = 42jliu --user input 
-    AND password = 74564jliu; --user input
+WHERE username = '42jliu' --user input 
+    AND password = '74564jliu'; --user input
 
 --register
 INSERT INTO User
@@ -13,12 +13,12 @@ VALUES ('ababa', 'ALIBABA','abccba',7767787790);
 --search by departure_city
 SELECT *
 FROM Carpool
-WHERE departure_city = Toronto;
+WHERE departure_city = 'Toronto';
 
 --search by destination_city
 SELECT *
 FROM Carpool
-WHERE destination_city = Waterloo;
+WHERE destination_city = 'Waterloo';
 
 --search by time
 SELECT *
