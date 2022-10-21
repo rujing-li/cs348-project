@@ -3,8 +3,8 @@
 --login
 SELECT *
 FROM User
-WHERE username = '42jliu' --user input 
-    AND password = '74564jliu'; --user input
+WHERE username = '42jliu'
+    AND password = '74564jliu';
 
 --register
 INSERT INTO User
@@ -23,8 +23,8 @@ WHERE destination_city = 'Waterloo';
 --search by time
 SELECT *
 FROM Carpool
-WHERE time < 2022-10-23 11:30:00
-    AND time > 2022-10-20 09:00:00;
+WHERE time < '2022-10-23 11:30:00'
+    AND time > '2022-10-20 09:00:00';
 
 --Update profile
 UPDATE User

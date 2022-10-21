@@ -1,5 +1,0 @@
-DROP TABLE User;
-DROP TABLE Drive;
-DROP TABLE Car;
-DROP TABLE Carpool;
-DROP TABLE Ride;

@@ -1,0 +1,46 @@
+SELECT * FROM User WHERE username = '42jliu' AND password = '74564jliu'
+
+USERNAME                       LEGAL_NAME                     PASSWORD                       PHONE_NUM                     
+------------------------------ ------------------------------ ------------------------------ ------------------------------
+42jliu                         Jane                           74564jliu                      209-109-1001                  
+
+  1 record(s) selected.
+
+
+INSERT INTO User VALUES ('ababa', 'ALIBABA','abccba',7767787790)
+DB20000I  The SQL command completed successfully.
+
+SELECT * FROM Carpool WHERE departure_city = 'Toronto'
+
+DRIVER_USERNAME                TIME                       DEPARTURE_CITY                 DESTINATION_CITY               CAR_PLATE                      AVAILABILITY PRICE  
+------------------------------ -------------------------- ------------------------------ ------------------------------ ------------------------------ ------------ -------
+Azzs3                          2022-10-20-09.00.00.000000 Toronto                        Waterloo                       SKWI881                        4                26.
+RJ1234                         2022-10-23-08.30.00.000000 Toronto                        Mississauga                    ABCD121                        3                30.
+acid                           2022-10-21-07.00.00.000000 Toronto                        Ottawa                         BKJI582                        1                50.
+Akii                           2022-10-31-13.00.00.000000 Toronto                        Waterloo                       CDSH770                        3                25.
+
+  4 record(s) selected.
+
+
+SELECT * FROM Carpool WHERE destination_city = 'Waterloo'
+
+DRIVER_USERNAME                TIME                       DEPARTURE_CITY                 DESTINATION_CITY               CAR_PLATE                      AVAILABILITY PRICE  
+------------------------------ -------------------------- ------------------------------ ------------------------------ ------------------------------ ------------ -------
+Azzs3                          2022-10-20-09.00.00.000000 Toronto                        Waterloo                       SKWI881                        4                26.
+Akii                           2022-10-31-13.00.00.000000 Toronto                        Waterloo                       CDSH770                        3                25.
+
+  2 record(s) selected.
+
+
+SELECT * FROM Carpool WHERE time < '2022-10-23 11:30:00' AND time > '2022-10-20 09:00:00'
+
+DRIVER_USERNAME                TIME                       DEPARTURE_CITY                 DESTINATION_CITY               CAR_PLATE                      AVAILABILITY PRICE  
+------------------------------ -------------------------- ------------------------------ ------------------------------ ------------------------------ ------------ -------
+RJ1234                         2022-10-23-08.30.00.000000 Toronto                        Mississauga                    ABCD121                        3                30.
+acid                           2022-10-21-07.00.00.000000 Toronto                        Ottawa                         BKJI582                        1                50.
+
+  2 record(s) selected.
+
+
+
+DB21007E  End of file reached while reading the command.
