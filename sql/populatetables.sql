@@ -1,3 +1,5 @@
+-- source <path to sql>/sql/populatetables.sql
+
 LOAD DATA LOCAL INFILE '<path to database>/dataset/user.csv' INTO TABLE USER
 COLUMNS TERMINATED BY ','
 OPTIONALLY ENCLOSED BY '"'
