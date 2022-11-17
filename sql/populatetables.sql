@@ -1,6 +1,41 @@
-LOAD DATA LOCAL INFILE '<path-to-repo>/dataset/user.txt' INTO TABLE USER;
-LOAD DATA LOCAL INFILE '<path-to-repo>/dataset/driver.txt' INTO TABLE Driver;
-LOAD DATA LOCAL INFILE '<path-to-repo>/dataset/car.txt' INTO TABLE Car;
-LOAD DATA LOCAL INFILE '<path-to-repo>/dataset/carpool.txt' INTO TABLE Carpool;
-LOAD DATA LOCAL INFILE '<path-to-repo>/dataset/drive.txt' INTO TABLE Drive;
-LOAD DATA LOCAL INFILE '<path-to-repo>/dataset/ride.txt' INTO TABLE Ride;
+LOAD DATA LOCAL INFILE '<path to database>/dataset/user.csv' INTO TABLE USER
+COLUMNS TERMINATED BY ','
+OPTIONALLY ENCLOSED BY '"'
+ESCAPED BY '"'
+LINES TERMINATED BY '\n'
+IGNORE 1 LINES;
+
+LOAD DATA LOCAL INFILE '<path to database>/dataset/driver.csv' INTO TABLE Driver
+COLUMNS TERMINATED BY ','
+OPTIONALLY ENCLOSED BY '"'
+ESCAPED BY '"'
+LINES TERMINATED BY '\n'
+IGNORE 1 LINES;
+
+LOAD DATA LOCAL INFILE '<path to database>/dataset/car.csv' INTO TABLE Car
+COLUMNS TERMINATED BY ','
+OPTIONALLY ENCLOSED BY '"'
+ESCAPED BY '"'
+LINES TERMINATED BY '\n'
+IGNORE 1 LINES;
+
+LOAD DATA LOCAL INFILE '<path to database>/dataset/carpool.csv' INTO TABLE Carpool
+COLUMNS TERMINATED BY ','
+OPTIONALLY ENCLOSED BY '"'
+ESCAPED BY '"'
+LINES TERMINATED BY '\n'
+IGNORE 1 LINES;
+
+LOAD DATA LOCAL INFILE '<path to database>/dataset/drive.csv' INTO TABLE Drive
+COLUMNS TERMINATED BY ','
+OPTIONALLY ENCLOSED BY '"'
+ESCAPED BY '"'
+LINES TERMINATED BY '\n'
+IGNORE 1 LINES;
+
+LOAD DATA LOCAL INFILE '<path to database>/dataset/ride.csv' INTO TABLE Ride
+COLUMNS TERMINATED BY ','
+OPTIONALLY ENCLOSED BY '"'
+ESCAPED BY '"'
+LINES TERMINATED BY '\n'
+IGNORE 1 LINES;
