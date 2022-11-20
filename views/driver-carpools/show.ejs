@@ -3,21 +3,21 @@
 <div class="row">
     <div class="col-6 offset-3">
         <div class="card mb-3">
-            <!-- <img src="<%= carpool.image%>" class="card-img-top" alt="..."> -->
             <div class="card-body">
                 <h5 class="card-title"><%= carpool.time%></h5>
-                <p class="card-text"><%= carpool.driver_username%></p>
-            </div>
-            <ul class="list-group list-group-flush">
                 <li class="list-group-item text-muted"><%= carpool.departure_city%></li>
                 <li class="list-group-item text-muted"><%= carpool.destination_city%></li>
+            </div>
+            <ul class="list-group list-group-flush">
                 <li class="list-group-item">$<%= carpool.price %></li>
             </ul>
             <div class="card-body">
-                <!-- <a class="card-link btn btn-info" href="/carpools/<%=carpool._id%>/edit">Edit</a> -->
-                <!-- <form class="d-inline" action="/carpools/<%=carpool._id%>?_method=DELETE" method="POST">
+                <li class="list-group-item">$<%= carpool.car_plate %></li>
+                <li class="list-group-item">$<%= carpool.availability %></li>
+                <a class="card-link btn btn-info" href="/driver-carpools/<%=carpool.carpool_id%>/edit">Edit</a>
+                <form class="d-inline" action="/driver-carpools/<%=carpool.carpool_id%>?_method=DELETE" method="POST">
                     <button class="btn btn-danger">Delete</button>
-                </form> -->
+                </form>
             </div>
         </div>
     </div>

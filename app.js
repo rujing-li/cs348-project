@@ -90,7 +90,7 @@ app.get('/driver/new', catchAsync(async (req, res) => {
     res.render('driver/new');
 }));
 
-// tested not working
+// tested insertion not working
 app.post('/driver/new', validateDriver, catchAsync(async (req, res) => {
     if (!req.body.driver) throw new ExpressError('Invalid Driver Data', 400);
     const result = await db.query(
@@ -101,18 +101,18 @@ app.post('/driver/new', validateDriver, catchAsync(async (req, res) => {
     } else {
         console.log('Error in inserting into Driver');
     }
-    res.redirect(`/driver/car/new`);
+    res.redirect(`car/new`);
 }));
 
 ////////////////////driver/:driverusername/carpools////////////////////////////////
-// tested not working
+// tested selection not working
 app.get('/driver/:driverusername/carpools', catchAsync(async (req, res) => {
     const { driverusername } = req.params;
     q = 'SELECT * FROM Carpool WHERE driver_username = ?';
     db.query(q, [driverusername], (err, carpools) => {
         if (err) return res.send(err);
         console.log(carpools);
-        res.render('driver/carpools/index', { carpools });
+        res.render('driver-carpools/index', { carpools });
     });
 }));
 // alternative version
@@ -124,15 +124,16 @@ app.get('/driver/:driverusername/carpools', catchAsync(async (req, res) => {
 //         function(err, carpools, fields) {
 //           console.log(carpools); // results contains rows returned by server
 //         //   console.log(typeof carpools);
-//           res.render('driver/carpools/index', { carpools })
+//           res.render('driver-carpools/index', { carpools })
 //         //   console.log(fields); // fields contains extra meta data about results, if available
 //         }
 //       );
 // }));
 
-// Tested not working
+// tested frontend not working
 app.get('/driver/:driver-username/carpools/new', (req, res) => {
-    res.render('driver/carpools/new');
+    const { driverusername } = req.params;
+    res.render('driver-carpools/new', { driverusername });
 })
 
 app.post('/driver/:driver-username/carpools', validateCarpool, catchAsync(async (req, res, next) => {
@@ -147,13 +148,13 @@ app.post('/driver/:driver-username/carpools', validateCarpool, catchAsync(async 
 app.get('/driver/:driver-username/carpools/:carpool_id', catchAsync(async (req, res,) => {
     // TODO: need replacing to MySQL
     const carpool = await Carpool.findById(req.params.carpool_id)
-    res.render('driver/carpools/show', { carpool });
+    res.render('driver-carpools/show', { carpool });
 }));
 
 app.get('/driver/:driver-username/carpools/:carpool_id/edit', catchAsync(async (req, res) => {
     // TODO: need replacing to MySQL
     const carpool = await Carpool.findById(req.params.carpool_id)
-    res.render('driver/carpools/edit', { carpool });
+    res.render('driver-carpools/edit', { carpool });
 }))
 
 app.put('/driver/:driver-username/carpools/:carpool_id', validateCarpool, catchAsync(async (req, res) => {
@@ -170,12 +171,11 @@ app.delete('/driver/:driver-username/carpools/:carpool_id', catchAsync(async (re
     res.redirect('/driver/${driverusername}/carpools');
 }));
 
-////////////////////////////driver/car////////////////////////////////
-// Tested not working
-app.get('/driver/car/new', (req, res) => {
-    res.render('driver/car/new');
+////////////////////////////car////////////////////////////////
+app.get('/car/new', (req, res) => {
+    res.render('car/new');
 })
-// TODO: more routes for /driver/car needed
+// TODO: more routes for /car needed
 
 ////////////////////////////miscellaneous////////////////////////////////
 app.all('*', (req, res, next) => {
