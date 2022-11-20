@@ -10,7 +10,7 @@ const methodOverride = require('method-override');
 const db = mysql.createConnection({
   host: 'localhost',
   user: 'root',
-  password: 'cs348cs348', // <your-password>
+  password: '', // <your-password>
   database: 'RideShare',
   port: 3306
 });
@@ -58,6 +58,20 @@ app.get('/', (req, res) => {
     res.render('home')
 });
 
+app.post('/', (req, res) => {
+    var userName = req.body.user.username;
+    var userPwd = req.body.user.userpwd;
+  
+    db.query("select * from user where username=? and password=?",[userName,userPwd],function(err,data){
+      if (err) {
+        throw err;
+      } else if (data.length > 0) {
+        res.redirect('allcarpools');
+      } else {
+        res.end('wrong username or password');
+      }
+  })
+  });
 ////////////////////////////user////////////////////////////////
 
 ////////////////////////////allcarpools////////////////////////////////
