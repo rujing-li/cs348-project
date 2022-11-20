@@ -1,0 +1,22 @@
+<% layout('layouts/boilerplate')%>
+<div class="row">
+    <h1 class="text-center">Become a Driver</h1>
+    <div class="col-6 offset-3">
+        <form action="/driver/new" method="POST" novalidate class="validated-form">
+          <div class="mb-3">
+            <label class="form-label" for="username">Username</label>
+            <input class="form-control" type="text" id="username" name="driver[username]" required>
+            <div class="valid-feedback">
+                Looks good!
+            </div>
+          </div>
+          <div class="mb-3">
+                <label class="form-label" for="license-num">License Number</label>
+                <input class="form-control" type="text" id="license-num" name="driver[license_num]" required>
+                <div class="valid-feedback">
+                    Looks good!
+                </div>
+            </div>
+            <a class="btn btn-primary" href="/driver/car/new">Submit and Register Your Car</a>
+    </div>
+</div>

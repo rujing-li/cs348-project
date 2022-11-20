@@ -21,14 +21,14 @@ CREATE TABLE Car
 
 CREATE TABLE Carpool
 (
+  carpool_id INT PRIMARY KEY,
   driver_username VARCHAR(30) NOT NULL REFERENCES User(username),
   time DATETIME NOT NULL,
   departure_city VARCHAR(30) NOT NULL,
   destination_city VARCHAR(30) NOT NULL,
   car_plate VARCHAR(30) NOT NULL,
   availability CHAR(10) NOT NULL,
-  price DECIMAL,
-  PRIMARY KEY(driver_username, time)
+  price DECIMAL
 );
 
 CREATE TABLE Drive

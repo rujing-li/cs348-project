@@ -1,0 +1,20 @@
+<% layout('layouts/boilerplate')%>
+
+<div class="row">
+    <div class="col-6 offset-3">
+        <div class="card mb-3">
+            <div class="card-body">
+                <h5 class="card-title"><%= carpool.time%></h5>
+                <p class="card-text">Driver: <%= carpool.driver_username%></p>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item text-muted">From: <%= carpool.departure_city%></li>
+                <li class="list-group-item text-muted">To: <%= carpool.destination_city%></li>
+                <li class="list-group-item">$<%= carpool.price %></li>
+            </ul>
+            <div class="card-body">
+                <a class="card-link btn btn-info" href="/allcarpools">Join the Ride</a>
+            </div>
+        </div>
+    </div>
+</div>
