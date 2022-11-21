@@ -42,3 +42,8 @@ WHERE username = 'faye';
 UPDATE User
 SET phone_num = '123-456-7890'
 WHERE username = 'faye';
+
+SELECT AVG(price)
+FROM carpool
+WHERE departure_city = 'Toronto'
+    AND destination_city = 'Waterloo';
