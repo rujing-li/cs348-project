@@ -6,11 +6,12 @@ const { carpoolSchema, driverSchema, carSchema } = require('./schemas.js');
 const catchAsync = require('./utils/catchAsync');
 const ExpressError = require('./utils/ExpressError');
 const methodOverride = require('method-override');
+const { request } = require('http');
 
 const db = mysql.createConnection({
   host: 'localhost',
   user: 'root',
-  password: 'cs348cs348', // <your-password>
+  password: '', // <your-password>
   database: 'RideShare',
   port: 3306
 });
@@ -58,6 +59,43 @@ app.get('/', (req, res) => {
     res.render('home')
 });
 
+app.post('/', (req, res) => {
+    var action = req.body.action;
+    if (action == "Login") {
+        var userName = req.body.user.username;
+        var userPwd = req.body.user.userpwd;
+        db.query("SELECT * FROM user WHERE username=? and password=?",[userName,userPwd],function(err,data){
+        if (err) {
+            throw err;
+        } else if (data.length > 0) {
+            res.redirect('allcarpools');
+        } else {
+            res.end('wrong username or password');
+        }
+    })} else {
+        res.redirect('register');
+    }
+  });
+
+app.get('/register',(req,res) => {
+    res.render('register')
+});
+
+app.post('/register', async (req,res) =>{
+    var userName = req.body.user.username;
+    var userPwd = req.body.user.userpwd;
+    var userLN = req.body.user.legal_name;
+    var userPN = req.body.user.phone_number;
+
+    console.log (userName,userPwd,userLN,userPN);
+    db.query("INSERT INTO user VALUES (?,?,?,?)",[userName,userLN,userPwd,userPN],function(err,data){
+        if (err) {
+            throw err;
+        } else {
+            res.redirect('/');
+        }
+    })
+});
 ////////////////////////////user////////////////////////////////
 
 ////////////////////////////allcarpools////////////////////////////////
@@ -97,7 +135,7 @@ app.post('/driver/new', validateDriver, catchAsync(async (req, res) => {
         'INSERT INTO Driver VALUES(${req.body.driver.username}, ${req.body.driver.license_num})'
     );
     if (result.affectedRows) {
-        console.log('Successfully inserted into Driver')
+        console.log('Successfully inserted into Driver');
     } else {
         console.log('Error in inserting into Driver');
     }
