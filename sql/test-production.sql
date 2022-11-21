@@ -1,8 +1,8 @@
 
 SELECT *
 FROM User
-WHERE username = 'FzNeI8'
-    AND password = '4j=\OoH.';
+WHERE username = 'gBVRaI'
+    AND password = ']r=&@~eO';
 
 
 INSERT INTO User
@@ -21,16 +21,16 @@ WHERE destination_city = 'Waterloo';
 
 SELECT *
 FROM Carpool
-WHERE time < '2022-10-23 11:30:00'
-    AND time > '2022-10-20 09:00:00';
+WHERE time < '2022-11-23 11:30:00'
+    AND time > '2022-11-20 09:00:00';
 
 
 SELECT *
 FROM Carpool
 WHERE departure_city = 'Toronto' 
     AND destination_city = 'Mississauga' 
-    AND time < '2022-10-23 11:30:00'
-    AND time > '2022-10-20 09:00:00';
+    AND time < '2022-11-23 11:30:00'
+    AND time > '2022-11-20 09:00:00';
 
 
 UPDATE User

@@ -1,3 +1,5 @@
+username	legal_name	password	phone_num
+gBVRaI	Reginald Jefferson	]r=&@~eO	239-399-0841
 carpool_id	driver_username	time	departure_city	destination_city	car_plate	availability	price
 1	V87MR5	2022-12-12 01:48:00	Toronto	Waterloo	PGTP491	3	41
 3	HGQddt	2022-11-26 06:53:00	Toronto	Mississauga	AHCC425	1	56
@@ -139,5 +141,26 @@ carpool_id	driver_username	time	departure_city	destination_city	car_plate	availa
 386	uF4ZwM	2022-11-15 05:05:00	Cambridge	Waterloo	CARR410	2	46
 390	EAettv	2022-11-25 01:37:00	Toronto	Waterloo	EHZG625	2	21
 397	AGnFe5	2022-11-25 04:43:00	Toronto	Waterloo	WSXN668	1	28
+carpool_id	driver_username	time	departure_city	destination_city	car_plate	availability	price
+37	tf1udX	2022-11-20 09:35:00	Toronto	Mississauga	ILQS739	3	59
+51	7aYMFA	2022-11-21 12:37:00	Mississauga	Waterloo	NTLA837	1	54
+102	nFCdVw	2022-11-21 05:20:00	Ottawa	Waterloo	HRFZ062	2	25
+111	Wtzkfv	2022-11-23 10:06:00	Ottawa	Waterloo	CEUA755	1	35
+146	NgQvnK	2022-11-21 10:41:00	Ottawa	Kitchener	WWHJ606	2	30
+148	YpkHtL	2022-11-21 02:21:00	Ottawa	Kitchener	WKBM137	2	38
+168	vG5ljg	2022-11-21 05:39:00	Waterloo	Mississauga	SEGQ456	3	29
+178	mLPNXS	2022-11-20 11:10:00	Toronto	Mississauga	TMUU162	2	15
+184	U9BkVq	2022-11-21 02:43:00	Ottawa	Toronto	BXWB668	2	18
+251	yfrRGh	2022-11-23 01:43:00	Cambridge	Toronto	HBMG130	3	21
+258	Wj4dgr	2022-11-23 09:48:00	Waterloo	Waterloo	GVSO417	2	51
+270	Anr3mZ	2022-11-23 07:51:00	Toronto	Cambridge	HOXL869	2	34
+283	B9bn1r	2022-11-21 06:34:00	Toronto	Ottawa	FHUO054	1	51
+290	eEG3nb	2022-11-22 10:33:00	Kitchener	Cambridge	GEMK009	2	40
+314	zbo2wo	2022-11-22 05:03:00	Mississauga	Cambridge	MTKX746	2	22
+327	GtIZqB	2022-11-23 08:34:00	Cambridge	Ottawa	XRYV748	3	49
+388	khnZgR	2022-11-21 06:38:00	Mississauga	Ottawa	RIBF410	1	19
+carpool_id	driver_username	time	departure_city	destination_city	car_plate	availability	price
+37	tf1udX	2022-11-20 09:35:00	Toronto	Mississauga	ILQS739	3	59
+178	mLPNXS	2022-11-20 11:10:00	Toronto	Mississauga	TMUU162	2	15
 AVG(price)
 30.1667
