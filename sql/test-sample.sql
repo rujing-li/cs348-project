@@ -26,11 +26,19 @@ FROM Carpool
 WHERE time < '2022-10-23 11:30:00'
     AND time > '2022-10-20 09:00:00';
 
+--search by departure_city, destination_city and time
+SELECT *
+FROM Carpool
+WHERE departure_city = 'Toronto' 
+    AND destination_city = 'Mississauga' 
+    AND time < '2022-10-23 11:30:00'
+    AND time > '2022-10-20 09:00:00';
+
 --Update profile
 UPDATE User
 SET password = '123321'
-WHERE username = faye
+WHERE username = 'faye';
 
 UPDATE User
 SET phone_num = '123-456-7890'
-WHERE username = faye
+WHERE username = 'faye';
