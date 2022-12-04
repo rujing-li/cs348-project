@@ -7,11 +7,12 @@ const catchAsync = require('./utils/catchAsync');
 const ExpressError = require('./utils/ExpressError');
 const methodOverride = require('method-override');
 const { request } = require('http');
+const { abort } = require('process');
 
 const db = mysql.createConnection({
   host: 'localhost',
   user: 'root',
-  password: 'cs348cs348', // <your-password>
+  password: '', // <your-password>
   database: 'RideShare',
   port: 3306
 });
@@ -154,17 +155,26 @@ app.get('/driver/new', catchAsync(async (req, res) => {
 
 // tested insertion not working
 app.post('/driver/new', validateDriver, catchAsync(async (req, res) => {
-    if (!req.body.driver) throw new ExpressError('Invalid Driver Data', 400);
-    const result = await db.query(
-        'INSERT INTO Driver VALUES(${req.body.driver.username}, ${req.body.driver.license_num})'
-    );
-    if (result.affectedRows) {
-        console.log('Successfully inserted into Driver');
-    } else {
-        console.log('Error in inserting into Driver');
-    }
-    res.redirect(`car/new`);
-}));
+    var userName = req.body.driver.username;
+    var licenseNum = req.body.driver.license_num;
+
+    console.log (userName,licenseNum);
+
+    db.query("SELECT * FROM user WHERE username=?",[userName],function(err,data){
+        if (err) {
+            throw err;
+        } else if (data.length > 0) {
+            db.query("INSERT INTO driver VALUES (?,?)",[userName,licenseNum],function(err,data){
+                if (err) {
+                    throw err;
+                } else {
+                    res.redirect('/car/new');
+                }
+            })
+        } else {
+            res.end('please become a user to become a driver');
+        } 
+})}));
 
 ////////////////////driver/:driverusername/carpools////////////////////////////////
 // tested selection not working
@@ -195,7 +205,7 @@ app.get('/driver/:driverusername/carpools', catchAsync(async (req, res) => {
 // tested frontend not working
 app.get('/driver/:driver-username/carpools/new', (req, res) => {
     const { driverusername } = req.params;
-    res.render('driver-carpools/new', { driverusername });
+    res.render('/driver-carpools/new', { driverusername });
 })
 
 app.post('/driver/:driver-username/carpools', validateCarpool, catchAsync(async (req, res, next) => {
@@ -238,6 +248,35 @@ app.get('/car/new', (req, res) => {
     res.render('car/new');
 })
 // TODO: more routes for /car needed
+
+app.post('/car/new', catchAsync(async (req, res) => {
+    var userName = req.body.user.username;
+    var plateNum = req.body.car.plate_num;
+    var description = req.body.car.description;
+    var maxSeats = req.body.car.max_seats;
+
+    console.log (userName,plateNum,description,maxSeats);
+
+    db.query("SELECT * FROM driver WHERE username=?",[userName],function(err,data){
+        if (err) {
+            throw err;
+        } else if (data.length > 0) {
+            db.query("INSERT INTO drive VALUES (?,?)",[userName,plateNum],function(err,data){
+                if (err) {
+                    throw err;
+                }
+            })
+            db.query("INSERT INTO car VALUES (?,?,?)",[plateNum,description,maxSeats],function(err,data){
+                if (err) {
+                    throw err;
+                } else {
+                    res.redirect('/allcarpools');
+                }
+            })
+        } else {
+            res.end('please become a driver to record a new car');
+        } 
+})}));
 
 ////////////////////////////miscellaneous////////////////////////////////
 app.all('*', (req, res, next) => {
