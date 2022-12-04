@@ -11,7 +11,7 @@ const { request } = require('http');
 const db = mysql.createConnection({
   host: 'localhost',
   user: 'root',
-  password: '', // <your-password>
+  password: 'cs348cs348', // <your-password>
   database: 'RideShare',
   port: 3306
 });
@@ -56,7 +56,7 @@ const validateCar = (req, res, next) => {
 
 ////////////////////////////home////////////////////////////////
 app.get('/', (req, res) => {
-    res.render('home')
+    res.redirect('/allcarpools')
 });
 
 app.post('/', (req, res) => {
@@ -99,18 +99,42 @@ app.post('/register', async (req,res) =>{
 ////////////////////////////user////////////////////////////////
 
 ////////////////////////////allcarpools////////////////////////////////
-app.get('/allcarpools', catchAsync(async (req, res) => {
-    // const carpools = await Carpool.find({}); // need replacing to MySQL
-    db.query(
-        'SELECT * FROM Carpool',
-        function(err, carpools, fields) {
-          console.log(carpools); // results contains rows returned by server
-        //   console.log(typeof carpools);
-          res.render('allcarpools/index', { carpools })
-        //   console.log(fields); // fields contains extra meta data about results, if available
-        }
-      );
+app.get('/allcarpools/search', catchAsync(async (req, res) => {
+    res.render('allcarpools/search')
 }));
+
+app.post('/allcarpools/search', catchAsync(async (req, res) => {
+    res.redirect(`/allcarpools/?departure=${req.body.carpool.departure}&destination=${req.body.carpool.destination}&time_start=${req.body.carpool.time_start}&time_end=${req.body.carpool.time_end}`);
+}));
+
+app.get('/allcarpools', catchAsync(async (req, res) => {
+    if (Object.keys(req.query).length === 0) {
+        db.query(
+            'SELECT * FROM Carpool',
+            function(err, carpools, fields) {
+              console.log(carpools); // results contains rows returned by server
+            //   console.log(typeof carpools);
+              res.render('allcarpools/index', { carpools })
+            //   console.log(fields); // fields contains extra meta data about results, if available
+            }
+          );
+    } else {
+        const departure = req.query.departure;
+        const destination = req.query.destination;
+        const time_start = req.query.time_start;
+        const time_end = req.query.time_end;
+        // sample url: http://localhost:3000/allcarpools/?departure=Toronto&destination=Waterloo&time_start=2022-10-20%2009:00:00&time_end=2022-12-10%2011:30:00
+        const q = 'SELECT * FROM Carpool WHERE departure_city = ? AND destination_city = ? AND time > ? AND time < ? order by time';
+        db.query(q, [departure, destination, time_start, time_end], (err, carpools) => {
+            if (err) return res.send(err);
+            console.log(carpools); // results contains rows returned by server
+            res.render('allcarpools/results', { carpools })
+        }
+        );
+    }
+    
+}));
+
 app.get('/allcarpools/:carpool_id', (req, res) => {
     const carpool_id = req.params.carpool_id;
     const q = "SELECT * FROM Carpool WHERE carpool_id = ?";
