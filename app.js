@@ -106,6 +106,7 @@ app.get('/allcarpools', catchAsync(async (req, res) => {
         function(err, carpools, fields) {
           console.log(carpools); // results contains rows returned by server
         //   console.log(typeof carpools);
+          // TODO: modify carpool details here
           res.render('allcarpools/index', { carpools })
         //   console.log(fields); // fields contains extra meta data about results, if available
         }
