@@ -57,7 +57,8 @@ const validateCar = (req, res, next) => {
 
 ////////////////////////////home////////////////////////////////
 app.get('/', (req, res) => {
-    res.redirect('/allcarpools')
+    res.render('home');
+    //res.redirect('/allcarpools')
 });
 
 app.post('/', (req, res) => {
@@ -79,7 +80,7 @@ app.post('/', (req, res) => {
   });
 
 app.get('/register',(req,res) => {
-    res.render('register')
+    res.render('register');
 });
 
 app.post('/register', async (req,res) =>{
