@@ -1,0 +1,42 @@
+
+.authorize {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 80vh;
+
+    h1 {
+        font-size: 20px;
+        color: teal;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+        background-color: rgb(151, 220, 197);
+        gap: 20px;
+        padding: 30px;
+        width: 300px;
+
+        input {
+            padding: 10px;
+            border: none;
+            border-bottom: 1px solid gray;
+        }
+
+        button {
+            padding: 10px;
+            background-color: teal;
+            border-radius: 5px;
+            color: lightcyan;
+            border: none;
+            cursor: pointer;
+            
+        }
+
+        span {
+            text-align: center;
+        }
+    }
+}

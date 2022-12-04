@@ -1,0 +1,26 @@
+.navbar {
+
+    .container {
+        background-color: rgb(175, 194, 188);
+        padding: 10px 20px;
+        
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        .links {
+            text-decoration: none;
+            color: inherit;
+    
+            .logout {
+                text-decoration: none;
+
+                &:hover {
+                    color: teal;
+                }
+            }
+        }
+    }
+
+    
+}
