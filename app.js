@@ -7,6 +7,7 @@ const catchAsync = require('./utils/catchAsync');
 const ExpressError = require('./utils/ExpressError');
 const methodOverride = require('method-override');
 const { request } = require('http');
+const { abort } = require('process');
 
 const db = mysql.createConnection({
   host: 'localhost',
@@ -56,7 +57,7 @@ const validateCar = (req, res, next) => {
 
 ////////////////////////////home////////////////////////////////
 app.get('/', (req, res) => {
-    res.render('home')
+    res.redirect('/allcarpools')
 });
 
 app.post('/', (req, res) => {
@@ -99,6 +100,7 @@ app.post('/register', async (req,res) =>{
 ////////////////////////////user////////////////////////////////
 
 ////////////////////////////allcarpools////////////////////////////////
+<<<<<<< HEAD
 app.get('/allcarpools', catchAsync(async (req, res) => {
     // const carpools = await Carpool.find({}); // need replacing to MySQL
     db.query(
@@ -111,7 +113,44 @@ app.get('/allcarpools', catchAsync(async (req, res) => {
         //   console.log(fields); // fields contains extra meta data about results, if available
         }
       );
+=======
+app.get('/allcarpools/search', catchAsync(async (req, res) => {
+    res.render('allcarpools/search')
+>>>>>>> 4f715e74781e46c1dd606affc8d703e5e4a11b5f
 }));
+
+app.post('/allcarpools/search', catchAsync(async (req, res) => {
+    res.redirect(`/allcarpools/?departure=${req.body.carpool.departure}&destination=${req.body.carpool.destination}&time_start=${req.body.carpool.time_start}&time_end=${req.body.carpool.time_end}`);
+}));
+
+app.get('/allcarpools', catchAsync(async (req, res) => {
+    if (Object.keys(req.query).length === 0) {
+        db.query(
+            'SELECT * FROM Carpool',
+            function(err, carpools, fields) {
+              console.log(carpools); // results contains rows returned by server
+            //   console.log(typeof carpools);
+              res.render('allcarpools/index', { carpools })
+            //   console.log(fields); // fields contains extra meta data about results, if available
+            }
+          );
+    } else {
+        const departure = req.query.departure;
+        const destination = req.query.destination;
+        const time_start = req.query.time_start;
+        const time_end = req.query.time_end;
+        // sample url: http://localhost:3000/allcarpools/?departure=Toronto&destination=Waterloo&time_start=2022-10-20%2009:00:00&time_end=2022-12-10%2011:30:00
+        const q = 'SELECT * FROM Carpool WHERE departure_city = ? AND destination_city = ? AND time > ? AND time < ? order by time';
+        db.query(q, [departure, destination, time_start, time_end], (err, carpools) => {
+            if (err) return res.send(err);
+            console.log(carpools); // results contains rows returned by server
+            res.render('allcarpools/results', { carpools })
+        }
+        );
+    }
+    
+}));
+
 app.get('/allcarpools/:carpool_id', (req, res) => {
     const carpool_id = req.params.carpool_id;
     const q = "SELECT * FROM Carpool WHERE carpool_id = ?";
@@ -131,17 +170,26 @@ app.get('/driver/new', catchAsync(async (req, res) => {
 
 // tested insertion not working
 app.post('/driver/new', validateDriver, catchAsync(async (req, res) => {
-    if (!req.body.driver) throw new ExpressError('Invalid Driver Data', 400);
-    const result = await db.query(
-        'INSERT INTO Driver VALUES(${req.body.driver.username}, ${req.body.driver.license_num})'
-    );
-    if (result.affectedRows) {
-        console.log('Successfully inserted into Driver');
-    } else {
-        console.log('Error in inserting into Driver');
-    }
-    res.redirect(`car/new`);
-}));
+    var userName = req.body.driver.username;
+    var licenseNum = req.body.driver.license_num;
+
+    console.log (userName,licenseNum);
+
+    db.query("SELECT * FROM user WHERE username=?",[userName],function(err,data){
+        if (err) {
+            throw err;
+        } else if (data.length > 0) {
+            db.query("INSERT INTO driver VALUES (?,?)",[userName,licenseNum],function(err,data){
+                if (err) {
+                    throw err;
+                } else {
+                    res.redirect('/car/new');
+                }
+            })
+        } else {
+            res.end('please become a user to become a driver');
+        } 
+})}));
 
 ////////////////////driver/:driverusername/carpools////////////////////////////////
 // tested selection not working
@@ -172,7 +220,7 @@ app.get('/driver/:driverusername/carpools', catchAsync(async (req, res) => {
 // tested frontend not working
 app.get('/driver/:driver-username/carpools/new', (req, res) => {
     const { driverusername } = req.params;
-    res.render('driver-carpools/new', { driverusername });
+    res.render('/driver-carpools/new', { driverusername });
 })
 
 app.post('/driver/:driver-username/carpools', validateCarpool, catchAsync(async (req, res, next) => {
@@ -215,6 +263,35 @@ app.get('/car/new', (req, res) => {
     res.render('car/new');
 })
 // TODO: more routes for /car needed
+
+app.post('/car/new', catchAsync(async (req, res) => {
+    var userName = req.body.user.username;
+    var plateNum = req.body.car.plate_num;
+    var description = req.body.car.description;
+    var maxSeats = req.body.car.max_seats;
+
+    console.log (userName,plateNum,description,maxSeats);
+
+    db.query("SELECT * FROM driver WHERE username=?",[userName],function(err,data){
+        if (err) {
+            throw err;
+        } else if (data.length > 0) {
+            db.query("INSERT INTO drive VALUES (?,?)",[userName,plateNum],function(err,data){
+                if (err) {
+                    throw err;
+                }
+            })
+            db.query("INSERT INTO car VALUES (?,?,?)",[plateNum,description,maxSeats],function(err,data){
+                if (err) {
+                    throw err;
+                } else {
+                    res.redirect('/allcarpools');
+                }
+            })
+        } else {
+            res.end('please become a driver to record a new car');
+        } 
+})}));
 
 ////////////////////////////miscellaneous////////////////////////////////
 app.all('*', (req, res, next) => {
