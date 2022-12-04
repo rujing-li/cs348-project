@@ -56,12 +56,14 @@ const validateCar = (req, res, next) => {
 }
 
 ////////////////////////////home////////////////////////////////
-app.get('/', (req, res) => {
-    res.render('home');
+
+////////////////////////////user////////////////////////////////
+app.get('/login', (req, res) => {
+    res.render('user/login');
     //res.redirect('/allcarpools')
 });
 
-app.post('/', (req, res) => {
+app.post('/login', (req, res) => {
     var action = req.body.action;
     if (action == "Login") {
         var userName = req.body.user.username;
@@ -80,7 +82,7 @@ app.post('/', (req, res) => {
   });
 
 app.get('/register',(req,res) => {
-    res.render('register');
+    res.render('user/register');
 });
 
 app.post('/register', async (req,res) =>{
@@ -98,7 +100,6 @@ app.post('/register', async (req,res) =>{
         }
     })
 });
-////////////////////////////user////////////////////////////////
 
 ////////////////////////////allcarpools////////////////////////////////
 app.get('/allcarpools/search', catchAsync(async (req, res) => {
