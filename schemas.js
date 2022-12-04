@@ -2,7 +2,7 @@ const Joi = require('joi');
 
 module.exports.carpoolSchema = Joi.object({
     carpool: Joi.object({
-        driver_username: Joi.string().required(),
+        // driver_username: Joi.string().required(),
         time: Joi.string().required(),
         price: Joi.number().required().min(0),
         car_plate: Joi.string().required(),

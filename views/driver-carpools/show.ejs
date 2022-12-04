@@ -5,19 +5,22 @@
         <div class="card mb-3">
             <div class="card-body">
                 <h5 class="card-title"><%= carpool.time%></h5>
-                <li class="list-group-item text-muted"><%= carpool.departure_city%></li>
-                <li class="list-group-item text-muted"><%= carpool.destination_city%></li>
+                <h6 class="text-muted">Reference Number: <%= carpool.carpool_id%></li>
             </div>
             <ul class="list-group list-group-flush">
-                <li class="list-group-item">$<%= carpool.price %></li>
+                <li class="list-group-item">Availability: <%= carpool.availability%></li>
+                <li class="list-group-item text">From: <%= carpool.departure_city%></li>
+                <li class="list-group-item text">To: <%= carpool.destination_city%></li>
+                <li class="list-group-item text-muted">Price $<%= carpool.price %></li>
             </ul>
             <div class="card-body">
-                <li class="list-group-item">$<%= carpool.car_plate %></li>
-                <li class="list-group-item">$<%= carpool.availability %></li>
-                <a class="card-link btn btn-info" href="/driver-carpools/<%=carpool.carpool_id%>/edit">Edit</a>
-                <form class="d-inline" action="/driver-carpools/<%=carpool.carpool_id%>?_method=DELETE" method="POST">
+                <a class="card-link btn btn-info" href="/driver/<%= carpool.driver_username %>/carpools/<%=carpool.carpool_id%>/edit">Edit</a>
+                <form class="d-inline" action="/driver/<%= carpool.driver_username %>/carpools/<%=carpool.carpool_id%>?_method=DELETE" method="POST">
                     <button class="btn btn-danger">Delete</button>
                 </form>
+            </div>
+            <div class="card-body">
+                <a class="card-link btn btn-dark" href="/driver/<%= carpool.driver_username %>/carpools">Show Your Posted Carpools</a>
             </div>
         </div>
     </div>

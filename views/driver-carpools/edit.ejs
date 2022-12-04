@@ -2,16 +2,7 @@
 <div class="row">
     <h1 class="text-center">Edit Carpool</h1>
     <div class="col-6 offset-3">
-        <form action="/driver/:driverusername/carpools/<%=carpool.carpool_id%>?_method=PUT" method="POST" novalidate class="validated-form">
-            <div class="mb-3">
-                <label class="form-label" for="driver_username">Username</label>
-                <input class="form-control" type="text" id="driver_username" name="carpool[driver_username]"
-                    value="<%=carpool.driver_username %>" required>
-                <div class="valid-feedback">
-                    Looks good!
-                </div>
-            </div>
-            
+        <form action="/driver/<%=carpool.driver_username%>/carpools/<%=carpool.carpool_id%>?_method=PUT" method="POST" novalidate class="validated-form">
             <div class="mb-3">
                 <label class="form-label" for="time">Time</label>
                 <input class="form-control" type="text" id="time" name="carpool[time]"
@@ -20,7 +11,6 @@
                     Looks good!
                 </div>
             </div>
-
 
             <div class="mb-3">
                 <label class="form-label" for="departure_city">Departure City</label>
@@ -74,7 +64,7 @@
                 <button class="btn btn-info">Update Carpool</button>
             </div>
         </form>
-        <a href="/driver/:driverusername/carpools/<%= carpool.carpool_id%>">Back To Carpool</a>
+        <a href="/driver/<%= carpool.driver_username%>/carpools/<%= carpool.carpool_id%>">Back To Carpool</a>
 
     </div>
 </div>

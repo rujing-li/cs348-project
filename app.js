@@ -12,7 +12,7 @@ const { abort } = require('process');
 const db = mysql.createConnection({
   host: 'localhost',
   user: 'root',
-  password: '', // <your-password>
+  password: 'cs348cs348', // <your-password>
   database: 'RideShare',
   port: 3306
 });
@@ -155,7 +155,6 @@ app.get('/driver/new', catchAsync(async (req, res) => {
     res.render('driver/new');
 }));
 
-// tested insertion not working
 app.post('/driver/new', validateDriver, catchAsync(async (req, res) => {
     var userName = req.body.driver.username;
     var licenseNum = req.body.driver.license_num;
@@ -179,70 +178,105 @@ app.post('/driver/new', validateDriver, catchAsync(async (req, res) => {
 })}));
 
 ////////////////////driver/:driverusername/carpools////////////////////////////////
-// tested selection not working
-app.get('/driver/:driverusername/carpools', catchAsync(async (req, res) => {
-    const { driverusername } = req.params;
+// shows all carpools posted by this driver
+app.get('/driver/:dusername/carpools', catchAsync(async (req, res) => {
+    const { dusername } = req.params;
     q = 'SELECT * FROM Carpool WHERE driver_username = ?';
-    db.query(q, [driverusername], (err, carpools) => {
+    db.query(q, [dusername], (err, carpools) => {
         if (err) return res.send(err);
         console.log(carpools);
         res.render('driver-carpools/index', { carpools });
     });
 }));
-// alternative version
-// app.get('/driver/:driverusername/carpools', catchAsync(async (req, res) => {
-//     // const carpools = await Carpool.find({}); // need replacing to MySQL
-//     const { driverusername } = req.params;
-//     db.query(
-//         'SELECT * FROM Carpool WHERE driver_username = ${driverusername}',
-//         function(err, carpools, fields) {
-//           console.log(carpools); // results contains rows returned by server
-//         //   console.log(typeof carpools);
-//           res.render('driver-carpools/index', { carpools })
-//         //   console.log(fields); // fields contains extra meta data about results, if available
-//         }
-//       );
-// }));
 
-// tested frontend not working
-app.get('/driver/:driver-username/carpools/new', (req, res) => {
-    const { driverusername } = req.params;
-    res.render('/driver-carpools/new', { driverusername });
+// allow this driver to add new carpool
+app.get('/driver/:dusername/carpools/new', (req, res) => {
+    const dusername = req.params.dusername;
+    res.render('driver-carpools/new', { dusername });
 })
 
-app.post('/driver/:driver-username/carpools', validateCarpool, catchAsync(async (req, res, next) => {
+app.post('/driver/:dusername/carpools', validateCarpool, catchAsync(async (req, res, next) => {
+    const dusername = req.params.dusername;
     if (!req.body.carpool) throw new ExpressError('Invalid Carpool Data', 400);
-    // TODO: need replacing to MySQL
-    const carpool = new Carpool(req.body.carpool); 
-    await carpool.save();
-
-    res.redirect(`/driver/:driver-username/carpools/${carpool.carpool_id}`)
+    db.query("SELECT * FROM Driver WHERE username=?",[dusername],function(err,data){
+        if (err) {
+            throw err;
+        } else if (data.length > 0) {
+            let carpool = req.body.carpool;
+            console.log("Driver requesting to add new carpool exists in the database.")
+            let carpool_id = 0;
+            db.query("SELECT COUNT(carpool_id) AS total FROM Carpool", function(err,data){
+                carpool_id = Object.values(data)[0]['total'] + 1;
+                console.log("Newly add carpool with ID: ", carpool_id);
+                db.query("INSERT INTO Carpool VALUES (?,?,?,?,?,?,?,?)",[
+                        carpool_id, dusername, carpool.time, carpool.departure_city, carpool.destination_city, 
+                        carpool.car_plate, carpool.availability, carpool.price
+                    ], function(err,data){
+                    if (err) {
+                        throw err;
+                    } else {
+                        res.redirect(`/driver/${dusername}/carpools/${carpool_id}`)
+                    }
+                    })
+            });
+        } else {
+            res.end('Driver username not found in Database');
+        } 
+    })
 }))
 
-app.get('/driver/:driver-username/carpools/:carpool_id', catchAsync(async (req, res,) => {
-    // TODO: need replacing to MySQL
-    const carpool = await Carpool.findById(req.params.carpool_id)
-    res.render('driver-carpools/show', { carpool });
+// show a specific carpool of this driver
+app.get('/driver/:dusername/carpools/:carpool_id', catchAsync(async (req, res,) => {
+    const dusername = req.params.dusername;
+    const carpool_id = req.params.carpool_id;
+    q = 'SELECT * FROM Carpool WHERE driver_username = ? AND carpool_id = ?';
+    db.query(q, [dusername, carpool_id], (err, carpools) => {
+        console.log(carpools);
+        if (err) return res.send(err);
+        let carpool = carpools[0];
+        console.log(carpool);
+        res.render('driver-carpools/show', { carpool });
+    });
 }));
 
-app.get('/driver/:driver-username/carpools/:carpool_id/edit', catchAsync(async (req, res) => {
-    // TODO: need replacing to MySQL
-    const carpool = await Carpool.findById(req.params.carpool_id)
-    res.render('driver-carpools/edit', { carpool });
+// allow this driver to edit a specific carpool
+app.get('/driver/:dusername/carpools/:carpool_id/edit', catchAsync(async (req, res) => {
+    const dusername = req.params.dusername;
+    const carpool_id = req.params.carpool_id;
+    q = 'SELECT * FROM Carpool WHERE driver_username = ? AND carpool_id = ?';
+    db.query(q, [dusername, carpool_id], (err, carpools) => {
+        console.log(carpools);
+        if (err) return res.send(err);
+        let carpool = carpools[0];
+        console.log(carpool);
+        res.render('driver-carpools/edit', { carpool });
+    });
 }))
 
-app.put('/driver/:driver-username/carpools/:carpool_id', validateCarpool, catchAsync(async (req, res) => {
-    const { carpool_id } = req.params;
-    // TODO: need replacing to MySQL
-    const carpool = await Carpool.findByIdAndUpdate(carpool_id, { ...req.body.carpool });
-    res.redirect(`/driver/carpools/${carpool.carpool_id}`)
+app.put('/driver/:dusername/carpools/:carpool_id', validateCarpool, catchAsync(async (req, res) => {
+    const dusername = req.params.dusername;
+    const carpool_id = req.params.carpool_id;
+    if (!req.body.carpool) throw new ExpressError('Invalid Carpool Data', 400);
+    let carpool = req.body.carpool;
+    q = 'UPDATE Carpool SET time = ?, departure_city = ?, destination_city = ?, car_plate = ?, availability = ?, price = ? WHERE driver_username = ? AND carpool_id = ?';
+    db.query(q, [ carpool.time, carpool.departure_city, carpool.destination_city, carpool.car_plate, 
+                carpool.availability, carpool.price, dusername, carpool_id ], (err, results) => {
+            console.log(results);
+            if (err) return res.send(err);
+            res.redirect(`/driver/${dusername}/carpools/${carpool_id}`)
+    });
 }));
 
-app.delete('/driver/:driver-username/carpools/:carpool_id', catchAsync(async (req, res) => {
-    const { carpool_id } = req.params;
-    // TODO: need replacing to MySQL
-    await Carpool.findByIdAndDelete(carpool_id);
-    res.redirect('/driver/${driverusername}/carpools');
+// allow this driver to delete a specific carpool
+app.delete('/driver/:dusername/carpools/:carpool_id', catchAsync(async (req, res) => {
+    const dusername = req.params.dusername;
+    const carpool_id = req.params.carpool_id;
+    q = 'DELETE FROM Carpool WHERE driver_username = ? AND carpool_id = ?';
+    db.query(q, [dusername, carpool_id], (err, results) => {
+        console.log(results);
+        if (err) return res.send(err);
+        res.redirect(`/driver/${dusername}/carpools`);
+    });
 }));
 
 ////////////////////////////car////////////////////////////////
@@ -272,7 +306,7 @@ app.post('/car/new', catchAsync(async (req, res) => {
                 if (err) {
                     throw err;
                 } else {
-                    res.redirect('/allcarpools');
+                    res.redirect(`/driver/${userName}/carpools/new`);
                 }
             })
         } else {

@@ -1,23 +1,24 @@
 <% layout('layouts/boilerplate')%>
 
-<h1>Driver's Carpools</h1>
+<h1>Your Carpools</h1>
 <% for (let carpool of carpools){%>
 <div class="card" mb-3>
     <div class="row">
         <div class="col-md-8">
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title"><%= carpool.time %></h5>
+                    <h6 class="text-muted">Reference Number: <%= carpool.carpool_id %></li>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Availability: <%= carpool.availability %></li>
+                    <li class="list-group-item text">From: <%= carpool.departure_city %></li>
+                    <li class="list-group-item text">To: <%= carpool.destination_city %></li>
+                    <li class="list-group-item text-muted">Price $<%= carpool.price %></li>
+                </ul>
+            </div>
             <div class="card-body">
-                <h5 class="card-title"><%= carpool.time %> </h5>
-                <p class="card-text">Driver: <%= carpool.availability %></p>
-                <p class="card-text">Driver: <%= carpool.car_plate %></p>
-                <p class="card-text">
-                    <small class="text-muted">From: <%= carpool.departure_city%></small>
-                </p>
-                <p class="card-text">
-                    <small class="text-muted">To: <%= carpool.destination_city%></small>
-                </p>
-                <p class="card-text">
-                    <small class="text-muted">Price is $<%=carpool.price%></small>
-                </p>
+                <a class="card-link btn btn-primary" href="/driver/<%= carpool.driver_username %>/carpools/<%= carpool.carpool_id %>">See Details</a>
             </div>
         </div>
     </div>
