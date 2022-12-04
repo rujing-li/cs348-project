@@ -100,23 +100,8 @@ app.post('/register', async (req,res) =>{
 ////////////////////////////user////////////////////////////////
 
 ////////////////////////////allcarpools////////////////////////////////
-<<<<<<< HEAD
-app.get('/allcarpools', catchAsync(async (req, res) => {
-    // const carpools = await Carpool.find({}); // need replacing to MySQL
-    db.query(
-        'SELECT * FROM Carpool',
-        function(err, carpools, fields) {
-          console.log(carpools); // results contains rows returned by server
-        //   console.log(typeof carpools);
-          // TODO: modify carpool details here
-          res.render('allcarpools/index', { carpools })
-        //   console.log(fields); // fields contains extra meta data about results, if available
-        }
-      );
-=======
 app.get('/allcarpools/search', catchAsync(async (req, res) => {
     res.render('allcarpools/search')
->>>>>>> 4f715e74781e46c1dd606affc8d703e5e4a11b5f
 }));
 
 app.post('/allcarpools/search', catchAsync(async (req, res) => {
