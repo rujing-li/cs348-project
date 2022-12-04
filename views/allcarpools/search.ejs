@@ -1,0 +1,21 @@
+<% layout('layouts/boilerplate')%>
+<form class="form-inline" action="/allcarpools/search" method="POST" novalidate class="validated-form">
+  <h1 class="text-center">Search Rides</h1>
+  <div class="form-group mx-sm-3 mb-2">
+    <label for="departure" class="sr-only">Departure City</label>
+    <input type="text" class="form-control" id="departure" name="carpool[departure]" placeholder="Departure City">
+  </div>
+  <div class="form-group mx-sm-3 mb-2">
+    <label for="destination" class="sr-only">Destination City</label>
+    <input type="text" class="form-control" id="destination" name="carpool[destination]" placeholder="Destination City">
+  </div>
+  <div class="form-group mx-sm-3 mb-2">
+    <label for="time_start" class="sr-only">Time Range Start</label>
+    <input type="text" class="form-control" id="time_start" name="carpool[time_start]" placeholder="Time Start">
+  </div>
+  <div class="form-group mx-sm-3 mb-2">
+    <label for="time_end" class="sr-only">Time Range End</label>
+    <input type="text" class="form-control" id="time_end" name="carpool[time_end]" placeholder="Time End">
+  </div>
+  <button type="submit" class="btn btn-primary mb-2">Find Your Rides</button>
+</form>
