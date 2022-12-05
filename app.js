@@ -12,7 +12,7 @@ const { abort } = require('process');
 const db = mysql.createConnection({
   host: 'localhost',
   user: 'root',
-  password: 'cs348cs348', // <your-password>
+  password: '', // <your-password>
   database: 'RideShare',
   port: 3306
 });
@@ -150,7 +150,7 @@ app.get('/driver/:username/cars', (req,res)=>{
         db.query(
             'SELECT * FROM Car, Drive WHERE Drive.driver_username = ? And Drive.plate_num = Car.plate_num',[userName],function(err,cars,fields) {
                 console.log(cars);
-                res.render('driver/cardisplay',{cars})
+                res.render('driver/cardisplay',{cars, userName})
             }
         )
 });
@@ -223,7 +223,7 @@ app.post('/driver/new', validateDriver, catchAsync(async (req, res) => {
                 if (err) {
                     throw err;
                 } else {
-                    res.redirect('/car/new');
+                    res.redirect(`/car/${userName}/new`);
                 }
             })
         } else {
@@ -348,39 +348,34 @@ app.delete('/driver/:dusername/carpools/:carpool_id', catchAsync(async (req, res
 }));
 
 ////////////////////////////car////////////////////////////////
-app.get('/car/new', (req, res) => {
-    res.render('car/new');
+app.get('/car/:username/new', (req, res) => {
+    var username = req.params.username;
+    res.render('car/new',{username});
 })
 // TODO: more routes for /car needed
 
-app.post('/car/new', catchAsync(async (req, res) => {
-    var userName = req.body.user.username;
+app.post('/car/:username/new', catchAsync(async (req, res) => {
+    var userName = req.params.username;
     var plateNum = req.body.car.plate_num;
     var description = req.body.car.description;
     var maxSeats = req.body.car.max_seats;
 
-    console.log (userName,plateNum,description,maxSeats);
+    console.log (plateNum,description,maxSeats);
 
-    db.query("SELECT * FROM driver WHERE username=?",[userName],function(err,data){
+    db.query("INSERT INTO drive VALUES (?,?)",[userName,plateNum],function(err,data){
         if (err) {
             throw err;
-        } else if (data.length > 0) {
-            db.query("INSERT INTO drive VALUES (?,?)",[userName,plateNum],function(err,data){
-                if (err) {
-                    throw err;
-                }
-            })
-            db.query("INSERT INTO car VALUES (?,?,?)",[plateNum,description,maxSeats],function(err,data){
-                if (err) {
-                    throw err;
-                } else {
-                    res.redirect(`/driver/${userName}/carpools/new`);
-                }
-            })
+        }
+    })
+    db.query("INSERT INTO car VALUES (?,?,?)",[plateNum,description,maxSeats],function(err,data){
+        if (err) {
+            throw err;
         } else {
-            res.end('please become a driver to record a new car');
-        } 
-})}));
+            res.redirect(`/driver/${userName}/carpools/new`);
+        }
+    })
+
+}));
 
 ////////////////////////////miscellaneous////////////////////////////////
 app.all('*', (req, res, next) => {
