@@ -12,7 +12,7 @@ const { abort } = require('process');
 const db = mysql.createConnection({
   host: 'localhost',
   user: 'root',
-  password: '', // <your-password>
+  password: 'Yyf020603!', // <your-password>
   database: 'RideShare',
   port: 3306
 });
@@ -56,6 +56,10 @@ const validateCar = (req, res, next) => {
 }
 
 ////////////////////////////home////////////////////////////////
+app.get('/', (req, res) => {
+    res.render('home/home');
+});
+
 
 ////////////////////////////user////////////////////////////////
 app.get('/login', (req, res) => {
