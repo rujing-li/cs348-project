@@ -72,7 +72,7 @@ app.post('/login', (req, res) => {
         if (err) {
             throw err;
         } else if (data.length > 0) {
-            res.redirect('allcarpools');
+            res.redirect(`/user/${userName}`);
         } else {
             res.end('wrong username or password');
         }
@@ -96,9 +96,63 @@ app.post('/register', async (req,res) =>{
         if (err) {
             throw err;
         } else {
-            res.redirect('/');
+            res.redirect('/login');
         }
     })
+});
+
+app.get('/user/:username',(req,res) =>{
+    const username = req.params.username;
+    const q = "SELECT * FROM user WHERE username = ?";
+    db.query("SELECT * FROM driver INNER JOIN user ON driver.username = user.username WHERE driver.username = ?", [username], (err, driver) => {
+        console.log(username);
+        if (err) return res.send(err);
+        if (driver.length > 0){    
+            console.log(driver);
+            let dr = driver[0];
+            console.log(dr);
+            res.render('driver/profile',{dr});
+        } else {
+            db.query(q, [username], (err, users) => {
+                if (err) return res.send(err);
+                console.log(users);
+                let user = users[0];
+                res.render('user/profile', {user});
+            });
+        }
+    })    
+});
+
+app.get('/user/:username/edit', (req,res)=>{
+    const username = req.params.username;
+    res.render('user/edit',{username});
+})
+
+app.put('/user/:username', async (req,res) =>{
+    const userName = req.params.username;
+    var userPwd = req.body.user.newpwd;
+    var userLN = req.body.user.legal_name;
+    var userPN = req.body.user.phone_number;
+
+    console.log (userName,userPwd,userLN,userPN);
+    db.query("UPDATE user Set password=?, legal_name=?, phone_num=? WHERE username = ?",[userPwd,userLN,userPN,userName],function(err,data){
+        if (err) {
+            throw err;
+        } else {
+            res.redirect(`/user/${userName}`);
+        }
+    });
+});
+
+app.get('/driver/:username/cars', (req,res)=>{
+    var userName = req.params.username;
+    console.log(userName);
+        db.query(
+            'SELECT * FROM Car, Drive WHERE Drive.driver_username = ? And Drive.plate_num = Car.plate_num',[userName],function(err,cars,fields) {
+                console.log(cars);
+                res.render('driver/cardisplay',{cars})
+            }
+        )
 });
 
 ////////////////////////////allcarpools////////////////////////////////

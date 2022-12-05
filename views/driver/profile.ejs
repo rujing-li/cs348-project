@@ -1,0 +1,20 @@
+<% layout('layouts/boilerplate')%>
+
+<div class="row">
+    <div class="col-6 offset-3">
+        <div class="card mb-3">
+            <div class="card-body">
+                <h5 class="card-title"><%= dr.username%></h5>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">Legal Name: <%= dr.legal_name%></li>
+                <li class="list-group-item">Phone Number: <%= dr.phone_num%></li>
+                <li class="list-group-item">License Number: <%= dr.license_num%></li>
+            </ul>
+            <div class="card-body">
+                <a class="btn btn-primary" href="/driver/<%= dr.username%>/cars">Your garage</a>
+                <a class="btn btn-primary" href="/user/<%= dr.username%>/edit">Edit</a>
+            </div>
+        </div>
+    </div>
+</div>
