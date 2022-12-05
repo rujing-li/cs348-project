@@ -262,12 +262,15 @@ app.post('/driver/:dusername/carpools', validateCarpool, catchAsync(async (req, 
             db.query("SELECT COUNT(carpool_id) AS total FROM Carpool", function(err, data){
                 carpool_id = Object.values(data)[0]['total'] + 1;
                 console.log("New carpool ID: ", carpool_id);
-                db.query("SELECT * FROM Car WHERE plate_num = ?", [carpool.car_plate], function(err, results) {
+                db.query("SELECT * FROM Drive, Car WHERE Drive.plate_num = Car.plate_num AND Drive.driver_username = ? AND Car.plate_num = ?",
+                    [dusername, carpool.car_plate], function(err, results) {
+                        console.log("results is: ", results);
                     if (!Object.values(results).length) {
                         res.end('Car with plate num does not exist yet.');
                         return;
                     }
                     else {
+                        console.log("here", Object.values(results)[0]);
                         let max_seat = Object.values(results)[0]['max_seats'];
                         console.log("Max seat of this car is ", max_seat);
                         if (carpool.availability > max_seat) {
