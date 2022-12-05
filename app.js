@@ -12,7 +12,7 @@ const { abort } = require('process');
 const db = mysql.createConnection({
   host: 'localhost',
   user: 'root',
-  password: 'Yyf020603!', // <your-password>
+  password: '', // <your-password>
   database: 'RideShare',
   port: 3306
 });
