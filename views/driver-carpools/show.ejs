@@ -11,7 +11,7 @@
                 <li class="list-group-item">Availability: <%= carpool.availability%></li>
                 <li class="list-group-item text">From: <%= carpool.departure_city%></li>
                 <li class="list-group-item text">To: <%= carpool.destination_city%></li>
-                <li class="list-group-item text-muted">Price $<%= carpool.price %></li>
+                <li class="list-group-item text-muted">Price: $<%= carpool.price %></li>
             </ul>
             <div class="card-body">
                 <a class="card-link btn btn-info" href="/driver/<%= carpool.driver_username %>/carpools/<%=carpool.carpool_id%>/edit">Edit</a>
