@@ -33,14 +33,14 @@ New Users can register themselves and new user information will be added into th
 **Feature 3**: Search for Carpool by Destination and Time  
 User can filter out carpool posts that corresponds to their required location and time.  
 
-**Feature 4**: Edit User Profile
+**Feature 4**: Edit User Profile  
 User can view the information on their profile and edit them.  
 
 **Feature 5**: Become a Driver  
 A regular (passenger) user can register their car, driver liscence and car plate to become a driver.
 A user with *Driver* status can post carpool rides.  
 
-**Feature 6**: Post/Delete/Edit a Carpool
+**Feature 6**: Post/Delete/Edit a Carpool  
 A *Driver* user can post, delete, and edit a carpool ride. They can view their current posts.  
 
 
