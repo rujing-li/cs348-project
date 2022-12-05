@@ -55,3 +55,4 @@ WHERE departure_city = 'Toronto'
 INSERT INTO Car
 VALUES ('NIME764', 'Lexus RX350 white', 3);
 
+SELECT * FROM Car, Drive WHERE Drive.driver_username = '4uE3IE' And Drive.plate_num = Car.plate_num
