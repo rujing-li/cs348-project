@@ -12,7 +12,7 @@ const { abort } = require('process');
 const db = mysql.createConnection({
   host: 'localhost',
   user: 'root',
-  password: '', // <your-password>
+  password: 'cs348cs348', // <your-password>
   database: 'RideShare',
   port: 3306
 });
@@ -209,8 +209,8 @@ app.post('/driver/:dusername/carpools', validateCarpool, catchAsync(async (req, 
                 carpool_id = Object.values(data)[0]['total'] + 1;
                 console.log("New carpool ID: ", carpool_id);
                 db.query("SELECT * FROM Car WHERE plate_num = ?", [carpool.car_plate], function(err, results) {
-                    if (!results) {
-                        res.err('Car with plate num does not exist yet.');
+                    if (!Object.values(results).length) {
+                        res.end('Car with plate num does not exist yet.');
                         return;
                     }
                     else {
