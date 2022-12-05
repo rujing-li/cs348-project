@@ -12,7 +12,7 @@ const { abort } = require('process');
 const db = mysql.createConnection({
   host: 'localhost',
   user: 'root',
-  password: 'cs348cs348', // <your-password>
+  password: '', // <your-password>
   database: 'RideShare',
   port: 3306
 });
@@ -185,7 +185,7 @@ app.get('/driver/:dusername/carpools', catchAsync(async (req, res) => {
     db.query(q, [dusername], (err, carpools) => {
         if (err) return res.send(err);
         console.log(carpools);
-        res.render('driver-carpools/index', { carpools });
+        res.render('driver-carpools/index', { carpools, dusername });
     });
 }));
 
@@ -205,10 +205,23 @@ app.post('/driver/:dusername/carpools', validateCarpool, catchAsync(async (req, 
             let carpool = req.body.carpool;
             console.log("Driver requesting to add new carpool exists in the database.")
             let carpool_id = 0;
-            db.query("SELECT COUNT(carpool_id) AS total FROM Carpool", function(err,data){
+            db.query("SELECT COUNT(carpool_id) AS total FROM Carpool", function(err, data){
                 carpool_id = Object.values(data)[0]['total'] + 1;
-                console.log("Newly add carpool with ID: ", carpool_id);
-                db.query("INSERT INTO Carpool VALUES (?,?,?,?,?,?,?,?)",[
+                console.log("New carpool ID: ", carpool_id);
+                db.query("SELECT * FROM Car WHERE plate_num = ?", [carpool.car_plate], function(err, results) {
+                    if (!results) {
+                        res.err('Car with plate num does not exist yet.');
+                        return;
+                    }
+                    else {
+                        let max_seat = Object.values(results)[0]['max_seats'];
+                        console.log("Max seat of this car is ", max_seat);
+                        if (carpool.availability > max_seat) {
+                            res.end('Availability of this carpool exceeds maximum seat of the car.');
+                            return;
+                        }
+                    }
+                    db.query("INSERT INTO Carpool VALUES (?,?,?,?,?,?,?,?)",[
                         carpool_id, dusername, carpool.time, carpool.departure_city, carpool.destination_city, 
                         carpool.car_plate, carpool.availability, carpool.price
                     ], function(err,data){
@@ -218,6 +231,7 @@ app.post('/driver/:dusername/carpools', validateCarpool, catchAsync(async (req, 
                         res.redirect(`/driver/${dusername}/carpools/${carpool_id}`)
                     }
                     })
+                })
             });
         } else {
             res.end('Driver username not found in Database');
